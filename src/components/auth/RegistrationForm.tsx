@@ -39,7 +39,7 @@ export default function RegistrationForm() {
             <CardDescription>
               {isLogin 
                 ? 'Enter your credentials to access your dashboard' 
-                : 'Join GlobalLogix for seamless shipment management'}
+                : 'Join SwiftCargo for seamless shipment management'}
             </CardDescription>
           </CardHeader>
           <CardContent>

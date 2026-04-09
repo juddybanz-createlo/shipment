@@ -15,7 +15,10 @@ import {
   Camera,
   Upload,
   X,
-  FileText
+  FileText,
+  TrendingUp,
+  AlertTriangle,
+  Clock
 } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '../ui/card';
 import { Button } from '../ui/button';
@@ -149,14 +152,12 @@ export default function AdminPortal() {
         <div className="flex gap-2">
           {activeTab === 'shipments' ? (
             <Dialog>
-              <DialogTrigger 
-                render={
-                  <Button className="bg-brand-600 hover:bg-brand-700 text-white">
-                    <Plus className="h-4 w-4 mr-2" />
-                    New Shipment
-                  </Button>
-                }
-              />
+              <DialogTrigger asChild>
+                <Button className="bg-brand-600 hover:bg-brand-700 text-white shadow-lg shadow-brand-500/20">
+                  <Plus className="h-4 w-4 mr-2" />
+                  New Shipment
+                </Button>
+              </DialogTrigger>
               <DialogContent className="sm:max-w-[600px]">
                 <DialogHeader>
                   <DialogTitle>Create New Shipment</DialogTitle>
@@ -278,14 +279,12 @@ export default function AdminPortal() {
             </Dialog>
           ) : (
             <Dialog>
-              <DialogTrigger 
-                render={
-                  <Button className="bg-brand-600 hover:bg-brand-700 text-white">
-                    <Plus className="h-4 w-4 mr-2" />
-                    New Flight
-                  </Button>
-                }
-              />
+              <DialogTrigger asChild>
+                <Button className="bg-brand-600 hover:bg-brand-700 text-white shadow-lg shadow-brand-500/20">
+                  <Plus className="h-4 w-4 mr-2" />
+                  New Flight
+                </Button>
+              </DialogTrigger>
               <DialogContent className="sm:max-w-[600px]">
                 <DialogHeader>
                   <DialogTitle>Schedule New Flight</DialogTitle>
@@ -361,6 +360,30 @@ export default function AdminPortal() {
             </Dialog>
           )}
         </div>
+      </div>
+
+      {/* Stats Overview */}
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+        {[
+          { label: 'Total Shipments', value: shipments.length, icon: Package, color: 'text-blue-600', bg: 'bg-blue-50' },
+          { label: 'Active Flights', value: flights.filter(f => f.status === 'Active').length, icon: Plane, color: 'text-emerald-600', bg: 'bg-emerald-50' },
+          { label: 'Pending Updates', value: shipments.filter(s => s.status === 'Pending').length, icon: Clock, color: 'text-amber-600', bg: 'bg-amber-50' },
+          { label: 'Revenue (MTD)', value: `$${shipments.reduce((acc, s) => acc + (s.cost || 0), 0).toLocaleString()}`, icon: TrendingUp, color: 'text-brand-600', bg: 'bg-brand-50' },
+        ].map((stat, i) => (
+          <Card key={i} className="border-none shadow-sm bg-white">
+            <CardContent className="p-6">
+              <div className="flex items-center justify-between">
+                <div className="space-y-1">
+                  <p className="text-xs font-bold text-slate-400 uppercase tracking-wider">{stat.label}</p>
+                  <p className="text-2xl font-display font-bold text-slate-900">{stat.value}</p>
+                </div>
+                <div className={`h-12 w-12 rounded-2xl ${stat.bg} flex items-center justify-center`}>
+                  <stat.icon className={`h-6 w-6 ${stat.color}`} />
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        ))}
       </div>
 
       <div className="flex border-b border-slate-200">

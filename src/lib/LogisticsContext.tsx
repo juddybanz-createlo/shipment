@@ -78,7 +78,7 @@ export function LogisticsProvider({ children }: { children: React.ReactNode }) {
   };
 
   const claimShipment = (trackingNumber: string, userEmail: string) => {
-    const shipment = shipments.find(s => s.trackingNumber === trackingNumber);
+    const shipment = shipments.find(s => s.trackingNumber.trim().toUpperCase() === trackingNumber.trim().toUpperCase());
     if (shipment && !shipment.claimedBy) {
       updateShipment(shipment.id, { claimedBy: userEmail });
       return true;
